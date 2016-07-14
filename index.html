@@ -129,7 +129,7 @@
 			self.friendlyLastModified = moment(lastModified).format('MMM Do YYYY, hh:mm:ss a');
 		}
 
-		function onAjaxSuccess(xml, marker) {
+		function onAjaxSuccess(xml, filesOrFolders, marker) {
 			var listBucketResult = $(xml).find('ListBucketResult');
 
 			// set a reasonable title instead of "Bucket loading"
@@ -161,7 +161,7 @@
 
 			if( truncated )
 			{
-				getBucket( nextMarker );
+				getBucket( nextMarker, filesOrFolders );
 			}
 			else
 			{
@@ -185,16 +185,15 @@
 			}
 		}
 
-		function getBucket( marker )
+		function getBucket( marker, filesOrFolders )
 		{
 			$.ajax({
 				url: bucketUrl + ( marker ? '?marker=' + encodeURIComponent(marker) : '' ),
-				success: function( xhr ) { onAjaxSuccess( xhr, marker ); }
+				success: function( xhr ) { onAjaxSuccess( xhr, filesOrFolders, marker ); }
 			});
 		}
 		
-		var filesOrFolders = [];
-		getBucket( null );
+		getBucket( null, [] );
 
 		// compile while ajax is in progress
 		compiledTemplate = Handlebars.compile($('#file-or-folder').html());
