@@ -67,13 +67,13 @@ GPL alive by issuing this with the same license!
 	<tr data-folder="{{ folderName }}">
 		{{#if isFolder}}
 			<td class="folder-name" data-folder-toggle="{{filename}}">
-				<i class="glyphicon glyphicon-chevron-down i-expand-collapse" style="margin-left: calc(({{level}} - 1) * 16px);"></i>
+				<i class="glyphicon glyphicon-chevron-down i-expand-collapse" style="margin-left: calc( ( {{level}} - 1) * 16px );"></i>
 				<i class="glyphicon glyphicon-folder-open i-file-or-folder" style="margin-left: 4px;"></i>
 				{{simpleFilename}}
 			</td>
 		{{else}}
 			<td>
-				<i class="glyphicon glyphicon-file i-file-or-folder" style="margin-left: calc(({{level}} * 16px) + 4px);"></i>
+				<i class="glyphicon glyphicon-file i-file-or-folder" style="margin-left: calc( ( {{level}} * 16px ) + 4px );"></i>
 				<a href="{{url}}">{{simpleFilename}}</a>
 			</td>
 		{{/if}}
@@ -82,12 +82,12 @@ GPL alive by issuing this with the same license!
 		<td>{{type}}</td>
 	</tr>
 	{{#if isFolder}}
-		{{{ contents }}}
+		{{{contents}}}
 	{{/if}}
 </script>
 
 <script>
-(function($){
+( function($) {
 	"use strict";
 	var FOLDER_PATTERN = new RegExp('/$');
 	var DATE_FORMAT = 'DD.MM.YYYY HH:mm:ss';
@@ -96,26 +96,28 @@ GPL alive by issuing this with the same license!
 	var GB = 1024 * 1024 * 1024;
 
 	// replace last /index.html to get bucket root
-	var bucketUrl = document.location.href.replace(/\/[^\/]+$/, '');
+	var bucketUrl = document.location.href.replace( /\/[^\/]+$/, '' );
 	var compiledTemplate;
 
 	// return e.g. 1.2KB, 1.3MB, 2GB, etc.
-	function toFriendlySize(size){
-		if (size === 0) {
+	function toFriendlySize( size )
+	{
+		if( size === 0 ) {
 			return '';
-		} else if (size < KB) {
+		} else if( size < KB ) {
 			return size + ' B';
-		} else if (size < MB) {
-			return (size / KB).toFixed(0) + ' KB';
-		} else if (size < GB) {
-			return (size / MB).toFixed(2) + ' MB';
+		} else if( size < MB ) {
+			return ( size / KB ).toFixed( 0 ) + ' KB';
+		} else if( size < GB ) {
+			return ( size / MB ).toFixed( 2 ) + ' MB';
 		} else {
-			return ( size / GB ).toFixed(2) + ' GB';
+			return ( size / GB ).toFixed( 2 ) + ' GB';
 		}
 	}
 
 	// POJO describing a file or a folder
-	function FileOrFolder(lastModified, etag, size, key){
+	function FileOrFolder( lastModified, etag, size, key )
+	{
 		var self = this;
 
 		self.lastModified = lastModified;
@@ -124,19 +126,19 @@ GPL alive by issuing this with the same license!
 		self.key = key;
 
 		// init logic
-		self.isFolder = FOLDER_PATTERN.test(self.key);
-		self.filename = self.isFolder ? self.key.replace(FOLDER_PATTERN, '') : self.key;
+		self.isFolder = FOLDER_PATTERN.test( self.key );
+		self.filename = self.isFolder ? self.key.replace( FOLDER_PATTERN, '' ) : self.key;
 
 		var levels = self.filename.split('/');
-		var extension = self.filename.split('.').slice(-1)[0];
+		var extension = self.filename.split('.').slice( -1 )[0];
 
-		self.url = encodeURI(bucketUrl + '/' + self.key);
+		self.url = encodeURI( bucketUrl + '/' + self.key );
 		self.level = levels.length;
-		self.simpleFilename = levels[self.level - 1];
+		self.simpleFilename = levels[ self.level - 1 ];
 		self.folderName = levels.slice( 0, -1 ).join('/');
-		self.friendlySize = toFriendlySize(parseInt(self.size, 10));
-		self.type = self.isFolder ? 'Folder' : (extension != self.filename ? (extension.toUpperCase() + ' file') : 'Unknown');
-		self.friendlyLastModified = moment( lastModified ).format(DATE_FORMAT);
+		self.friendlySize = toFriendlySize( parseInt( self.size, 10 ) );
+		self.type = self.isFolder ? 'Folder' : ( extension != self.filename ? ( extension.toUpperCase() + ' file' ) : 'Unknown' );
+		self.friendlyLastModified = moment( lastModified ).format( DATE_FORMAT );
 	}
 
 	function renderContents( content, folder, template, folders )
@@ -149,6 +151,7 @@ GPL alive by issuing this with the same license!
 				element.contents = element.contents.html();
 				element.friendlySize = folders[ element.filename ].length + ' items';
 			}
+
 			content.append( template( element ) );
 		} );
 	}
@@ -165,22 +168,23 @@ GPL alive by issuing this with the same license!
 		var attr = $folder.data('folder-toggle');
 		var $icon = $folder.find('.i-expand-collapse').first();
 		if( state === null ) {
-			state = ! $('[ data-folder="' + attr + '" ]' ).is(':visible');
+			state = ! $( '[ data-folder="' + attr + '" ]' ).is(':visible');
 		}
 
-		$('[ data-folder="' + attr + '" ]' ).toggle( state );
+		$( '[ data-folder="' + attr + '" ]' ).toggle( state );
 		$icon
 			.toggleClass( 'glyphicon-chevron-down', state )
 			.toggleClass( 'glyphicon-chevron-right', ! state );
 	}
 
-	function onAjaxSuccess(xml, filesOrFolders, marker) {
+	function onAjaxSuccess( xml, filesOrFolders, marker )
+	{
 		var listBucketResult = $(xml).find('ListBucketResult');
 
 		// set a reasonable title instead of "Bucket loading"
 		var title = 'Index of bucket "' + listBucketResult.find('Name').text() + '"';
 		document.title = title;
-		$('#h1-title').text(title);
+		$('#h1-title').text( title );
 
 		var $tbodyContent = $('#tbody-content');
 		var truncated = listBucketResult.find('IsTruncated').text() == 'true';
@@ -188,8 +192,7 @@ GPL alive by issuing this with the same license!
 
 		// create the file or folder objects
 
-		listBucketResult.find('Contents').each(function(idx, element){
-
+		listBucketResult.find('Contents').each( function( idx, element ) {
 			var $element = $(element);
 			var name = $element.find('Key').text();
 			nextMarker = name;
@@ -201,8 +204,8 @@ GPL alive by issuing this with the same license!
 				name
 			);
 
-			filesOrFolders.push(fileOrFolder);
-		});
+			filesOrFolders.push( fileOrFolder );
+		} );
 
 		if( truncated )
 		{
@@ -211,9 +214,9 @@ GPL alive by issuing this with the same license!
 		else
 		{
 			// sort
-			filesOrFolders.sort(function(left, right){
+			filesOrFolders.sort( function( left, right ) {
 				return left.key.localeCompare( right.key, [], { sensitivity: 'base' } );
-			});
+			} );
 
 			var folders = {};
 			$.each( filesOrFolders, function( idx, element ) {
@@ -241,18 +244,18 @@ GPL alive by issuing this with the same license!
 
 	function getBucket( marker, filesOrFolders )
 	{
-		$.ajax({
-			url: bucketUrl + ( marker ? '?marker=' + encodeURIComponent(marker) : '' ),
+		$.ajax( {
+			url: bucketUrl + ( marker ? '?marker=' + encodeURIComponent( marker ) : '' ),
 			success: function( xhr ) { onAjaxSuccess( xhr, filesOrFolders, marker ); }
-		});
+		} );
 	}
 	
 	getBucket( null, [] );
 
 	// compile while ajax is in progress
-	compiledTemplate = Handlebars.compile($('#file-or-folder').html());
+	compiledTemplate = Handlebars.compile( $('#file-or-folder').html() );
 
-})(jQuery);
+} )( jQuery );
 </script>
 
 </body>
