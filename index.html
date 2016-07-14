@@ -147,6 +147,7 @@
 					element.contents = $('<div>');
 					renderContents( element.contents, folders[ element.filename ], template, folders );
 					element.contents = element.contents.html();
+					element.friendlySize = folders[ element.filename ].length + ' items';
 				}
 				content.append( template( element ) );
 			} );
