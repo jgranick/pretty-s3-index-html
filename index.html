@@ -75,7 +75,7 @@
 			{{/if}}
 			<td>{{friendlyLastModified}}</td>
 
-			<td>{{friendlySizeName}}</td>
+			<td>{{friendlySize}}</td>
 			<td>{{type}}</td>
 		</tr>
 	</script>
@@ -93,7 +93,7 @@
 		var compiledTemplate;
 
 		// return e.g. 1.2KB, 1.3MB, 2GB, etc.
-		function toFriendlySizeName(size){
+		function toFriendlySize(size){
 			if (size === 0) {
 				return '';
 			} else if (size < KB) {
@@ -123,7 +123,7 @@
 			self.levels = self.filename.split('/');
 			self.numLevels = self.levels.length;
 			self.simpleFilename = self.levels[self.numLevels - 1];
-			self.friendlySizeName = toFriendlySizeName(parseInt(self.size,10));
+			self.friendlySize = toFriendlySize(parseInt(self.size,10));
 			var foundTypes = TYPE_PATTERN.exec(self.simpleFilename);
 			self.type = self.isFolder ? 'Folder ' : (foundTypes ? (foundTypes[1].toUpperCase() + ' file') : 'Unknown');
 			self.friendlyLastModified = moment(lastModified).format('MMM Do YYYY, hh:mm:ss a');
