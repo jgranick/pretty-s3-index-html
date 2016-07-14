@@ -130,7 +130,7 @@ GPL alive by issuing this with the same license!
 		var levels = self.filename.split('/');
 		var extension = self.filename.split('.').slice(-1)[0];
 
-		self.url = bucketUrl + '/' + self.key;
+		self.url = encodeURI(bucketUrl + '/' + self.key);
 		self.level = levels.length;
 		self.simpleFilename = levels[self.level - 1];
 		self.folderName = levels.slice( 0, -1 ).join('/');
