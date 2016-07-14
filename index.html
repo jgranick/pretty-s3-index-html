@@ -129,7 +129,7 @@
 			self.friendlyLastModified = moment(lastModified).format('MMM Do YYYY, hh:mm:ss a');
 		}
 
-		function onAjaxSuccess(xml) {
+		function onAjaxSuccess(xml, marker) {
 			var listBucketResult = $(xml).find('ListBucketResult');
 
 			// set a reasonable title instead of "Bucket loading"
@@ -138,48 +138,63 @@
 			$('#h1-title').text(title);
 
 			var $tbodyContent = $('#tbody-content');
+			var truncated = listBucketResult.find('IsTruncated').text() == 'true';
+			var nextMarker;
 
 			// create the file or folder objects
-
-			var filesOrFolders = [];
 
 			listBucketResult.find('Contents').each(function(idx, element){
 
 				var $element = $(element);
+				var name = $element.find('Key').text();
+				nextMarker = name;
 
 				var fileOrFolder = new FileOrFolder(
 					 $element.find('LastModified').text(),
 					 $element.find('ETag').text(),
 					 $element.find('Size').text(),
-					 $element.find('Key').text()
+					 name
 				);
 
 				filesOrFolders.push(fileOrFolder);
 			});
 
-			// sort
-			filesOrFolders.sort(function(left, right){
-				if (left.levels === right.levels) {
-					return 0;
-				} else if (left.levels < right.levels) {
-					return -1;
-				}
-				return 1;
-			});
-
-			// fill in the rows
-			var str = '';
-			for (var i = 0; i < filesOrFolders.length; i ++) {
-				str += compiledTemplate(filesOrFolders[i]);
+			if( truncated )
+			{
+				getBucket( nextMarker );
 			}
-			$tbodyContent.append(str);
-			$('.hide-while-loading').show();
+			else
+			{
+				// sort
+				filesOrFolders.sort(function(left, right){
+					if (left.levels === right.levels) {
+						return 0;
+					} else if (left.levels < right.levels) {
+						return -1;
+					}
+					return 1;
+				});
+
+				// fill in the rows
+				var str = '';
+				for (var i = 0; i < filesOrFolders.length; i ++) {
+					str += compiledTemplate(filesOrFolders[i]);
+				}
+				$tbodyContent.append(str);
+				$('.hide-while-loading').show();
+			}
 		}
 
-		$.ajax({
-				 url: bucketUrl,
-				 success: onAjaxSuccess
-		});
+		function getBucket( marker )
+		{
+			$.ajax({
+				url: bucketUrl + ( marker ? '?marker=' + encodeURIComponent(marker) : '' ),
+				success: function( xhr ) { onAjaxSuccess( xhr, marker ); }
+			});
+		}
+		
+		var filesOrFolders = [];
+		getBucket( null );
 
 		// compile while ajax is in progress
 		compiledTemplate = Handlebars.compile($('#file-or-folder').html());
