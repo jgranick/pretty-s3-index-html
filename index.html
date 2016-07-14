@@ -1,3 +1,4 @@
+<!doctype html>
 <html>
 	<head>
 	<!--
@@ -28,8 +29,9 @@
 
 	-->
 
+		<meta charset="utf-8">
 		<title>Bucket loading...</title>
-		<link href="//netdna.bootstrapcdn.com/bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet"/>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
 		<style>
 			.hide-while-loading {
 				display:none;
@@ -42,7 +44,8 @@
 			}
 		</style>
 
-		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+		<script src="https://code.jquery.com/jquery-1.12.4.min.js"   integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
 		<script src="//cdnjs.cloudflare.com/ajax/libs/handlebars.js/1.1.2/handlebars.min.js"></script>
 		<script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.4.0/moment.min.js"></script>
 	</head>
@@ -67,10 +70,10 @@
 	<script id="file-or-folder" type="text/x-handlebars-template">
 		<tr>
 			{{#if isFolder}}
-				<td><i class="icon-chevron-down i-expand-collapse" style="margin-left:calc(({{numLevels}} - 1) * 16px)");></i><i class="icon-folder-open i-file-or-folder" style="margin-left:4px;"></i>
+				<td><i class="glyphicon glyphicon-chevron-down i-expand-collapse" style="margin-left:calc(({{numLevels}} - 1) * 16px)");></i><i class="glyphicon glyphicon-folder-open i-file-or-folder" style="margin-left:4px;"></i>
 				{{simpleFilename}}</td>
 			{{else}}
-				<td><i class="icon-file i-file-or-folder"	style="margin-left:calc(({{numLevels}} * 16px) + 4px);"></i>
+				<td><i class="glyphicon glyphicon-file i-file-or-folder"	style="margin-left:calc(({{numLevels}} * 16px) + 4px);"></i>
 				<a href="{{url}}">{{simpleFilename}}</a></td>
 			{{/if}}
 			<td>{{friendlyLastModified}}</td>
