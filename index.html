@@ -156,14 +156,14 @@ GPL alive by issuing this with the same license!
 		} );
 	}
 
-	function updateFolders( state = null )
+	function updateFolders( state )
 	{
 		$('.folder-name').each( function() {
 			updateFolder( $(this), state );
 		} );
 	}
 
-	function updateFolder( $folder, state = null )
+	function updateFolder( $folder, state )
 	{
 		var attr = $folder.data('folder-toggle');
 		var $icon = $folder.find('.i-expand-collapse').first();
@@ -229,7 +229,6 @@ GPL alive by issuing this with the same license!
 			} );
 
 			// fill in the rows
-			var str = '';
 			renderContents( $tbodyContent, folders['__ROOT__'], compiledTemplate, folders );
 
 			$('.folder-name').click( function() {
