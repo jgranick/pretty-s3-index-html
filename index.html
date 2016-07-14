@@ -216,12 +216,7 @@
 			{
 				// sort
 				filesOrFolders.sort(function(left, right){
-					if (left.levels === right.levels) {
-						return 0;
-					} else if (left.levels < right.levels) {
-						return -1;
-					}
-					return 1;
+					return left.key.localeCompare( right.key, [], { sensitivity: 'base' } );
 				});
 
 				var folders = {};
