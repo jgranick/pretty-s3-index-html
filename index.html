@@ -90,6 +90,7 @@ GPL alive by issuing this with the same license!
 (function($){
 	"use strict";
 	var FOLDER_PATTERN = new RegExp('/$');
+	var DATE_FORMAT = 'DD.MM.YYYY HH:mm:ss';
 	var KB = 1024;
 	var MB = 1024 * 1024;
 	var GB = 1024 * 1024 * 1024;
@@ -135,7 +136,7 @@ GPL alive by issuing this with the same license!
 		self.folderName = levels.slice( 0, -1 ).join('/');
 		self.friendlySize = toFriendlySize(parseInt(self.size, 10));
 		self.type = self.isFolder ? 'Folder' : (extension != self.filename ? (extension.toUpperCase() + ' file') : 'Unknown');
-		self.friendlyLastModified = moment(lastModified).format('MMM Do YYYY, hh:mm:ss a');
+		self.friendlyLastModified = moment( lastModified ).format(DATE_FORMAT);
 	}
 
 	function renderContents( content, folder, template, folders )
