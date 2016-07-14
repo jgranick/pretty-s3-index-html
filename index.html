@@ -34,7 +34,7 @@
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
 		<style>
 			.hide-while-loading {
-				display:none;
+				display: none;
 			}
 			.i-expand-collapse {
 				opacity: 0.3;
@@ -70,14 +70,18 @@
 	<script id="file-or-folder" type="text/x-handlebars-template">
 		<tr data-folder="{{ folderName }}">
 			{{#if isFolder}}
-				<td><i class="glyphicon glyphicon-chevron-down i-expand-collapse" style="margin-left:calc(({{numLevels}} - 1) * 16px)");></i><i class="glyphicon glyphicon-folder-open i-file-or-folder" style="margin-left:4px;"></i>
-				{{simpleFilename}}</td>
+				<td>
+					<i class="glyphicon glyphicon-chevron-down i-expand-collapse" style="margin-left: calc(({{numLevels}} - 1) * 16px);"></i>
+					<i class="glyphicon glyphicon-folder-open i-file-or-folder" style="margin-left: 4px;"></i>
+					{{simpleFilename}}
+				</td>
 			{{else}}
-				<td><i class="glyphicon glyphicon-file i-file-or-folder"	style="margin-left:calc(({{numLevels}} * 16px) + 4px);"></i>
-				<a href="{{url}}">{{simpleFilename}}</a></td>
+				<td>
+					<i class="glyphicon glyphicon-file i-file-or-folder" style="margin-left: calc(({{numLevels}} * 16px) + 4px);"></i>
+					<a href="{{url}}">{{simpleFilename}}</a>
+				</td>
 			{{/if}}
 			<td>{{friendlyLastModified}}</td>
-
 			<td>{{friendlySize}}</td>
 			<td>{{type}}</td>
 		</tr>
@@ -111,7 +115,6 @@
 			}
 			return (size / GB).toFixed(2) + ' GB';
 		}
-
 
 		// POJO describing a file or a folder
 		function FileOrFolder(lastModified, etag, size, key){
@@ -170,10 +173,10 @@
 				nextMarker = name;
 
 				var fileOrFolder = new FileOrFolder(
-					 $element.find('LastModified').text(),
-					 $element.find('ETag').text(),
-					 $element.find('Size').text(),
-					 name
+					$element.find('LastModified').text(),
+					$element.find('ETag').text(),
+					$element.find('Size').text(),
+					name
 				);
 
 				filesOrFolders.push(fileOrFolder);
