@@ -95,8 +95,8 @@
 		var FOLDER_PATTERN = new RegExp('/$');
 		var TYPE_PATTERN = new RegExp('\\.([^\\.\\s]{1,10})$');
 		var KB = 1024;
-		var MB = 1000000;
-		var GB = 1000000000;
+		var MB = 1024 * 1024;
+		var GB = 1024 * 1024 * 1024;
 
 		// replace last /index.html to get bucket root
 		var bucketUrl = document.location.href.replace(/\/[^\/]+$/, '');
@@ -112,8 +112,9 @@
 				return (size / KB).toFixed(0) + ' KB';
 			} else if (size < GB) {
 				return (size / MB).toFixed(2) + ' MB';
+			} else {
+				return ( size / GB ).toFixed(2) + ' GB';
 			}
-			return (size / GB).toFixed(2) + ' GB';
 		}
 
 		// POJO describing a file or a folder
