@@ -3,9 +3,9 @@ Pretty S3 index.html
 
 Authors
 -------
-Francesco Pasqualini
-Nolan Lawson (http://nolanlawson.com)
-Olivier Scherler (http://olivier.ithink.ch/)
+Francesco Pasqualini  
+Nolan Lawson (http://nolanlawson.com)  
+Olivier Scherler (http://olivier.ithink.ch/)  
 
 License
 -------
