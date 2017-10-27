@@ -101,6 +101,7 @@ the GPL by knowing I’m required to distribute this under the same license. ;-)
 	// replace last /index.html to get bucket root
 	var bucketUrl = document.location.href.replace( /\/[^\/]+$/, '' );
 	var compiledTemplate;
+	var createdFolders = [];
 
 	// return e.g. 1.2KB, 1.3MB, 2GB, etc.
 	function toFriendlySize( size )
@@ -141,7 +142,14 @@ the GPL by knowing I’m required to distribute this under the same license. ;-)
 		self.folderName = levels.slice( 0, -1 ).join('/');
 		self.friendlySize = toFriendlySize( parseInt( self.size, 10 ) );
 		self.type = self.isFolder ? 'Folder' : ( extension != self.filename ? ( extension.toUpperCase() + ' file' ) : 'Unknown' );
-		self.friendlyLastModified = moment( lastModified ).format( DATE_FORMAT );
+		self.friendlyLastModified = lastModified != "" ? moment( lastModified ).format( DATE_FORMAT ) : "";
+		
+		// TODO: Make easier to configure?
+		if (self.level == 1) {
+			if (self.filename == "index.html" || self.filename == "favicon.ico") {
+				self.hidden = true;
+			}
+		}
 	}
 
 	function renderContents( content, folder, template, folders )
@@ -206,8 +214,18 @@ the GPL by knowing I’m required to distribute this under the same license. ;-)
 				$element.find('Size').text(),
 				name
 			);
-
-			filesOrFolders.push( fileOrFolder );
+			
+			if (!fileOrFolder.hidden) {
+				// crude method to force addition of folders
+				var folderName = fileOrFolder.folderName;
+				if (folderName && folderName != '' && folderName != "__ROOT__" && !createdFolders[folderName]) {
+					createdFolders[folderName] = true;
+					// TODO: Handle last modified date
+					filesOrFolders.push (new FileOrFolder("", "", "", folderName + "/"));
+				}
+				
+				filesOrFolders.push( fileOrFolder );
+			}
 		} );
 
 		if( truncated )
@@ -218,7 +236,15 @@ the GPL by knowing I’m required to distribute this under the same license. ;-)
 		{
 			// sort
 			filesOrFolders.sort( function( left, right ) {
-				return left.key.localeCompare( right.key, [], { sensitivity: 'base' } );
+				// force folders to sort before files
+				if (left.isFolder && !right.isFolder) return -1;
+				if (!left.isFolder && right.isFolder) return 1;
+				// reverse sort subdirectories (newest build first)
+				if (left.level > 1 && right.level > 1) {
+					return left.key.localeCompare( right.key, [], { sensitivity: 'base' } ) * -1;
+				} else {
+					return left.key.localeCompare( right.key, [], { sensitivity: 'base' } );
+				}
 			} );
 
 			var folders = {};
