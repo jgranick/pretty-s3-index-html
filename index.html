@@ -26,6 +26,8 @@ the GPL by knowing I’m required to distribute this under the same license. ;-)
 -->
 <meta charset="utf-8">
 <title>Loading...</title>
+<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+<link rel="icon" href="/favicon.ico" type="image/x-icon">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
 <style>
 .hide-while-loading {
@@ -51,7 +53,7 @@ the GPL by knowing I’m required to distribute this under the same license. ;-)
 <body>
 
 <div class="container">
-	<h1 id="h1-title">Bucket loading...</h1>
+	<h1 id="h1-title">Loading...</h1>
 	<table class="hide-while-loading table table-striped">
 		<thead>
 			<tr>
@@ -93,7 +95,7 @@ the GPL by knowing I’m required to distribute this under the same license. ;-)
 ( function($) {
 	"use strict";
 	var FOLDER_PATTERN = new RegExp('/$');
-	var DATE_FORMAT = 'DD.MM.YYYY HH:mm:ss';
+	var DATE_FORMAT = 'YYYY-MM-DD HH:mm:ss';
 	var KB = 1024;
 	var MB = 1024 * 1024;
 	var GB = 1024 * 1024 * 1024;
@@ -193,7 +195,7 @@ the GPL by knowing I’m required to distribute this under the same license. ;-)
 		var listBucketResult = $(xml).find('ListBucketResult');
 
 		// set a reasonable title instead of "Bucket loading"
-		var title = 'Index of bucket "' + listBucketResult.find('Name').text() + '"';
+		var title = 'Index of "' + listBucketResult.find('Name').text() + '"';
 		document.title = title;
 		$('#h1-title').text( title );
 
