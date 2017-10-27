@@ -102,6 +102,9 @@ the GPL by knowing I’m required to distribute this under the same license. ;-)
 
 	// replace last /index.html to get bucket root
 	var bucketUrl = document.location.href.replace( /\/[^\/]+$/, '' );
+	
+	// TODO: Convert from s3-website URL to s3 URL automatically
+	bucketUrl = "http://builds.openfl.org.s3-us-east-2.amazonaws.com";
 	var compiledTemplate;
 	var createdFolders = [];
 
