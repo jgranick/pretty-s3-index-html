@@ -23,6 +23,8 @@ GPL alive by issuing this with the same license!
 
 Modified by Olivier Scherler.  (http://olivier.ithink.ch/).  I’m showing I understand
 the GPL by knowing I’m required to distribute this under the same license. ;-)
+
+Modified by Lewis Lebentz too. (https://lew.im).
 -->
 <meta charset="utf-8">
 <title>Loading...</title>
@@ -102,9 +104,9 @@ the GPL by knowing I’m required to distribute this under the same license. ;-)
 
 	// replace last /index.html to get bucket root
 	var bucketUrl = document.location.href.replace( /\/[^\/]+$/, '' );
-	
+
 	// TODO: Convert from s3-website URL to s3 URL automatically
-	bucketUrl = "http://builds.openfl.org.s3-us-east-2.amazonaws.com";
+	bucketUrl = "ENTER BUCKET URL HERE";
 	var compiledTemplate;
 	var createdFolders = [];
 
@@ -148,7 +150,7 @@ the GPL by knowing I’m required to distribute this under the same license. ;-)
 		self.friendlySize = toFriendlySize( parseInt( self.size, 10 ) );
 		self.type = self.isFolder ? 'Folder' : ( extension != self.filename ? ( extension.toUpperCase() + ' file' ) : 'Unknown' );
 		self.friendlyLastModified = lastModified != "" ? moment( lastModified ).format( DATE_FORMAT ) : "";
-		
+
 		// TODO: Make easier to configure?
 		if (self.level == 1) {
 			if (self.filename == "index.html" || self.filename == "favicon.ico") {
@@ -165,7 +167,9 @@ the GPL by knowing I’m required to distribute this under the same license. ;-)
 				element.contents = $('<div>');
 				renderContents( element.contents, folders[ element.filename ], template, folders );
 				element.contents = element.contents.html();
-				element.friendlySize = folders[ element.filename ].length + ' items';
+				if( folders[ element.filename ] ) {
+					element.friendlySize = folders[ element.filename ].length + ' items';
+				}
 			}
 
 			content.append( template( element ) );
@@ -219,16 +223,16 @@ the GPL by knowing I’m required to distribute this under the same license. ;-)
 				$element.find('Size').text(),
 				name
 			);
-			
+
 			if (!fileOrFolder.hidden) {
 				// crude method to force addition of folders
 				var folderName = fileOrFolder.folderName;
-				if (folderName && folderName != '' && folderName != "__ROOT__" && !createdFolders[folderName]) {
+				if (folderName && folderName != '' && folderName != "__ROOT__" && createdFolders[folderName]) {
 					createdFolders[folderName] = true;
 					// TODO: Handle last modified date
 					filesOrFolders.push (new FileOrFolder("", "", "", folderName + "/"));
 				}
-				
+
 				filesOrFolders.push( fileOrFolder );
 			}
 		} );
@@ -282,7 +286,7 @@ the GPL by knowing I’m required to distribute this under the same license. ;-)
 			success: function( xhr ) { onAjaxSuccess( xhr, filesOrFolders, marker ); }
 		} );
 	}
-	
+
 	getBucket( null, [] );
 
 	// compile while ajax is in progress
